@@ -19,14 +19,6 @@ module TicketMaster::Provider
         end
       end
 
-      def self.search(options = {}, limit = 1000)
-        hash = API.find(:all)
-        puts hash.inspect
-        if hash.key?("objects")
-          projects = hash["objects"].collect { |project| self.new project }
-          search_by_attribute(projects, options, limit)
-        end
-      end
 
     end
   end

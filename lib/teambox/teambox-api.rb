@@ -60,6 +60,10 @@ module TeamboxAPI
 
 
   class Project < Base
+    def self.instantiate_collection(collection, prefix_options = {})
+      objects = collection["objects"]
+      objects.collect! { |record| instantiate_record(record, prefix_options) }
+    end
   end
 
   # Find tickets
