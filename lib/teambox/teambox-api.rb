@@ -64,6 +64,32 @@ module TeamboxAPI
       objects = collection["objects"]
       objects.collect! { |record| instantiate_record(record, prefix_options) }
     end
+
+    def encode(options={})
+      val = []
+      attributes.each_pair do |key, value|
+       val << "#{URI.escape key}=#{URI.escape value}" rescue nil
+      end
+      val.join('&')
+    end
+
+    #def update
+     #  connection.put(element_path(prefix_options) + '?' + encode, nil, self.class.headers).tap do |response|
+      #    load_attributes_from_response(response)
+      # end
+    #end
+
+    def create
+      connection.post(collection_path + '?' + encode, nil, self.class.headers).tap do |response|
+        self.id = id_from_response(response)
+        load_attributes_from_response(response)
+      end
+    end
+
+    def id
+      @attributes['id']
+    end
+
   end
 
   # Find tickets
@@ -77,11 +103,11 @@ module TeamboxAPI
 
 
   class Task < Base
-    self.site += '/projects/:project_id/task_list/:task_list_id/'
+    self.site += '/projects/:id/task_list/:task_list_id/'
   end
 
   class Comment < Base
-   self.site += '/projects/:project_id/tasks/:task_id/'
+   self.site += '/projects/:id/tasks/:task_id/'
   end
 
 end

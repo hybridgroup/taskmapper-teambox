@@ -19,6 +19,10 @@ module TicketMaster::Provider
         end
       end
 
+      def id
+        self[:id]
+      end
+
 
     end
   end
