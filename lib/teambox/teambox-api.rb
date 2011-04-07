@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'active_support'
 require 'active_resource'
+require 'oauth2'
+require 'net/https'
 
 # Ruby lib for working with the Teambox API's JSON interface.
 # You should set the authentication using your login
@@ -11,14 +13,59 @@ require 'active_resource'
 module TeamboxAPI
   class Error < StandardError; end
   class << self
+     attr_accessor :client_id, :client_secret, :site, :username, :password, :token
+     attr_reader :account
 
     #Sets up basic authentication credentials for all the resources.
-    def authenticate(username, password)
+    def authenticate(username, password, client_id, client_secret)
       @username  = username
       @password  = password
+      @client_id = client_id
+      @client_secret = client_secret
+      @site = 'https://teambox.com'
+
       self::Base.user = username
       self::Base.password = password
-    end 
+
+      self.token = access_token(self)
+
+    end
+
+    def account=(name)
+      resources.each do |klass|
+        klass.site = klass.site_format % (host_format % [protocol, domain_format, name])
+      end
+      @account = name
+    end
+
+    def access_token(master)
+      @auth_url = '/oauth/authorize'
+      consumer ||= OAuth2::Client.new(master.client_id,
+                                   master.client_secret,
+                                   {:site =>
+                                     {:url => master.site+'/oauth/token',
+                                      :ssl => {:verify => OpenSSL::SSL::VERIFY_NONE,
+                                               :ca_file => nil
+                                              }
+                                     },
+                                    :authorize_url => @auth_url,
+                                    :parse_json => true})
+      response = consumer.request(:post, @auth_url, {:grant_type => 'authorization_code',
+                                                   :client_id => master.client_id,
+                                                   :client_secret => master.client_secret,
+                                                   :username => master.username,
+                                                   :password => master.password,
+                                                   :redirect_uri => ''},
+                                                   'Content-Type' => 'application/x-www-form-urlencoded')
+      OAuth2::AccessToken.new(consumer, response['access_token']).token
+    end
+
+    def token=(value)
+      resources.each do |klass|
+        klass.headers['Authorization'] = 'OAuth' + value.to_s
+      end
+      @token = value
+    end
 
     def resources
       @resources ||= []
