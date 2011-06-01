@@ -88,9 +88,9 @@ module TeamboxAPI
       end
     end
 
-    #def tickets(options = {})
-     # Task.find(:all, :params => options.update(:id => id))
-    #end
+    def tickets(options = {})
+      Task.find(:all, :params => options.update(:id => id))
+    end
     
 
     def id

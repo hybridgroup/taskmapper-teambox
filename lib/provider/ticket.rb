@@ -16,10 +16,8 @@ module TicketMaster::Provider
            hash = {:status => object.status,
                    :name => object.name,
                    :task_id => object.id,
-                   :task_list_id => object.task_list_id,
                    :updated_at => object.updated_at,
-                   :user_id => object.user_id,
-                   :project_id => object.project_id,
+                   :project_id => project_id,
                    :comments_count => object.comments_count}
           else
             hash = object
@@ -27,8 +25,30 @@ module TicketMaster::Provider
           super hash
         end
       end
-      
-      
+
+      def self.create(*options)
+        task = API.new(options.first.merge!(:status => 1,
+                                            :updated_at => Time.now,
+                                            :comments_count => 0)) 
+        ticket = self.new task
+        task.save
+        ticket
+      end
+
+
+      def self.find_by_id(project_id, task_id)
+        self.search(project_id, {'task_id' => task_id}).first
+      end
+
+      def self.search(project_id, options = {}, limit = 1000)
+        tickets = API.find(:all, :params => {:project_id => project_id}).collect { |ticket| self.new ticket, project_id }
+        self.search_by_attribute(tickets, options, limit)
+      end
+
+      def self.find_by_attributes(project_id, attributes = {})
+        self.search(project_id, attributes)
+      end
+
     end
   end
 end
