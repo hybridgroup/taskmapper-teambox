@@ -19,10 +19,6 @@ module TicketMaster::Provider
         raise "Please provide username, password, client id and client secret"
       end
       TeamboxAPI.authenticate(auth.client_id, auth.client_secret, auth.username, auth.password)
-      #if auth.username.blank? and auth.password.blank?
-      #  raise "Please provide username and password"
-      #end
-      #TeamboxAPI.authenticate(auth.username, auth.password)
     end
     
     # declare needed overloaded methods here
