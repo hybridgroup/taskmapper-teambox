@@ -1,12 +1,11 @@
 require 'rubygems'
 require 'active_support'
 require 'active_resource'
-require 'net/https'
 require 'oauth2'
 
 # Ruby lib for working with the Teambox API's JSON interface.
 # You should set the authentication using your login
-# credentials with HTTP Basic Authentication.
+# credentials, client_id and client_secret (OAuth2).
 
 # This library is a small wrapper around the REST interface
 
@@ -46,7 +45,7 @@ module TeamboxAPI
                                                     :username => master.username, 
                                                     :password => master.password,
                                                     :scope => 'read_projects write_projects'},
-                                                    'Content-Type' => 'application/x-www-form-urlencoded')
+                                  'Content-Type' => 'application/x-www-form-urlencoded')
 
       OAuth2::AccessToken.new(consumer, response['access_token']).token
     
@@ -105,7 +104,11 @@ module TeamboxAPI
     end
 
     def tickets(options = {})
-      Task.find(:all, :params => options.update(:id => id))
+      Task.find(:all, :params => options.update(:project_id => id))
+    end
+
+    def id
+      self[:id]
     end
     
   end
@@ -131,7 +134,6 @@ module TeamboxAPI
   end
 
   class Comment < Base
-   self.site += '/projects/:id/tasks/:task_id/'
   end
 
 end

@@ -17,8 +17,7 @@ module TicketMaster::Provider
                    :name => object.name,
                    :task_id => object.id,
                    :updated_at => object.updated_at,
-                   :project_id => project_id,
-                   :comments_count => object.comments_count}
+                   :project_id => object.project_id}
           else
             hash = object
           end
@@ -28,8 +27,8 @@ module TicketMaster::Provider
 
       def self.create(*options)
         task = API.new(options.first.merge!(:status => 1,
-                                            :updated_at => Time.now,
-                                            :comments_count => 0)) 
+                                            :updated_at => Time.now
+                                            )) 
         ticket = self.new task
         task.save
         ticket
