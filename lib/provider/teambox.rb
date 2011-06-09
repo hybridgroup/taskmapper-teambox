@@ -15,14 +15,14 @@ module TicketMaster::Provider
     def authorize(auth = {})
       @authentication ||= TicketMaster::Authenticator.new(auth)
       auth = @authentication
-      #if auth.username.blank? and auth.password.blank? and auth.client_id.nil? and auth.client_secret.nil?
-       # raise "Please provide username, password, client id and client secret"
-      #end
-      #TeamboxAPI.authenticate(auth.username, auth.password, auth.client_id, auth.client_secret)
-      if auth.username.blank? and auth.password.blank?
-        raise "Please provide username and password"
+      if auth.username.blank? and auth.password.blank? and auth.client_id.nil? and auth.client_secret.nil?
+        raise "Please provide username, password, client id and client secret"
       end
-      TeamboxAPI.authenticate(auth.username, auth.password)
+      TeamboxAPI.authenticate(auth.client_id, auth.client_secret, auth.username, auth.password)
+      #if auth.username.blank? and auth.password.blank?
+      #  raise "Please provide username and password"
+      #end
+      #TeamboxAPI.authenticate(auth.username, auth.password)
     end
     
     # declare needed overloaded methods here

@@ -2,6 +2,7 @@ require 'rubygems'
 require 'active_support'
 require 'active_resource'
 require 'net/https'
+require 'oauth2'
 
 # Ruby lib for working with the Teambox API's JSON interface.
 # You should set the authentication using your login
@@ -12,15 +13,53 @@ require 'net/https'
 module TeamboxAPI
   class Error < StandardError; end
   class << self
-    def authenticate(username, password)
+    attr_accessor :client_id, :client_secret, :site, :username, :password, :token
+    def authenticate(client_id, client_secret, username, password)
       @username  = username
       @password  = password
+      @site = 'https://teambox.com/'
+      @client_id = client_id
+      @client_secret = client_secret
 
       self::Base.user = username
       self::Base.password = password
+      self.token = access_token(self)
 
     end
 
+    def access_token(master)
+      @auth_url = '/oauth/token'
+      consumer = OAuth2::Client.new(master.client_id,
+                                    master.client_secret,
+                                    {:site => 
+                                              {:url => master.site, 
+                                               :ssl => {:verify => OpenSSL::SSL::VERIFY_NONE,
+                                                        :ca_file => nil
+                                                       }
+                                              },
+                                    :authorize_url => @auth_url,
+                                    :parse_json => true})
+                                      
+      response = consumer.request(:post, @auth_url, {:grant_type => 'password', 
+                                                    :client_id => master.client_id,
+                                                    :client_secret => master.client_secret,
+                                                    :username => master.username, 
+                                                    :password => master.password,
+                                                    :scope => 'read_projects write_projects'},
+                                                    'Content-Type' => 'application/x-www-form-urlencoded')
+      puts response.inspect
+
+      OAuth2::AccessToken.new(consumer, response['access_token']).token
+    
+    end
+
+    def token=(value)
+      resources.each do |klass|
+        klass.headers['Authorization'] = 'OAuth ' + value.to_s
+      end
+      @token = value
+    end
+    
     def resources
       @resources ||= []
     end
@@ -66,37 +105,10 @@ module TeamboxAPI
       objects.collect! { |record| instantiate_record(record, prefix_options) }
     end
 
-    def encode(options={})
-      val = []
-      attributes.each_pair do |key, value|
-       val << "project[#{URI.escape key}]=#{URI.escape value}" rescue nil
-      end
-      val.join('&')
-    end
-
-    #def update
-    #   connection.put(element_path(prefix_options) + '?' + encode, nil, self.class.headers).tap do |response|
-    #      puts element_path(prefix_options) + '?' + encode
-    #      load_attributes_from_response(response)
-    #   end
-    #end
-
-    def create
-      connection.post(collection_path + '?' + encode, nil, self.class.headers).tap do |response|
-        self.id = id_from_response(response)
-        load_attributes_from_response(response)
-      end
-    end
-
     def tickets(options = {})
       Task.find(:all, :params => options.update(:id => id))
     end
     
-
-    def id
-      @attributes['id']
-    end
-
   end
 
   # Find tickets
@@ -110,6 +122,8 @@ module TeamboxAPI
 
 
   class Task < Base
+
+    self.site += '/projects/:project_id/task_lists/:task_list_id/'
 
     def self.instantiate_collection(collection, prefix_options = {})
         objects = collection["objects"]
