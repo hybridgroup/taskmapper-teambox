@@ -64,7 +64,7 @@ module TeamboxAPI
   end
 
   class Base < ActiveResource::Base
-    self.site = 'https://teambox.com/api/1'
+    self.site = 'https://teambox.com/api/1/'
     self.format = :json
     def self.inherited(base)
       TeamboxAPI.resources << base
@@ -98,19 +98,47 @@ module TeamboxAPI
 
 
   class Project < Base
+
+    def self.collection_path(attributes, prefix_options = {}, query_options = nil)
+        prefix_options, query_options = split_options(prefix_options) if query_options.nil?
+        "#{prefix(prefix_options)}organizations/#{attributes[:organization_id].to_s}/#{collection_name}.#{format.extension}#{query_string(query_options)}"
+    end
+    
+
     def self.instantiate_collection(collection, prefix_options = {})
       objects = collection["objects"]
       objects.collect! { |record| instantiate_record(record, prefix_options) }
     end
 
     def tickets(options = {})
-      Task.find(:all, :params => options.update(:project_id => id))
+      Task.find(:all, :params => options.update(:project_id => project_id))
     end
 
-    def id
+    def project_id
       self[:id]
     end
-    
+
+    def encode(options={})
+      val = []
+      attributes.each_pair do |key, value|
+        val << "#{URI.escape key}=#{URI.escape value}" rescue nil
+      end
+      val.join('&')
+    end
+
+    def update
+       connection.put(element_path(prefix_options) + '?' + encode, nil, self.class.headers).tap do |response|
+          load_attributes_from_response(response)
+       end
+    end
+
+    def create
+      connection.post(collection_path(attributes) + '?' + encode, nil, self.class.headers).tap do |response|
+        self.id = id_from_response(response)
+        load_attributes_from_response(response)
+      end
+    end
+
   end
 
   # Find tickets
@@ -125,7 +153,7 @@ module TeamboxAPI
 
   class Task < Base
 
-    self.site += '/projects/:project_id/task_lists/:task_list_id/'
+    #self.site += '/projects/:project_id/'
 
     def self.instantiate_collection(collection, prefix_options = {})
         objects = collection["objects"]
