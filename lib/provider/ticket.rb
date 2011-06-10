@@ -15,9 +15,9 @@ module TicketMaster::Provider
           unless object.is_a? Hash
            hash = {:status => object.status,
                    :name => object.name,
-                   :task_id => object.id,
                    :updated_at => object.updated_at,
-                   :project_id => object.project_id}
+                   :id => object.id,
+                   :project_id => project_id.nil? ? object.prefix_options[:project_id] : project_id}
           else
             hash = object
           end
@@ -34,9 +34,8 @@ module TicketMaster::Provider
         ticket
       end
 
-
       def self.find_by_id(project_id, task_id)
-        self.search(project_id, {'task_id' => task_id}).first
+        self.search(project_id, {:id => task_id}).first
       end
 
       def self.search(project_id, options = {}, limit = 1000)

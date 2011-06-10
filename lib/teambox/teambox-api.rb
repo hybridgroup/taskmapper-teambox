@@ -99,9 +99,9 @@ module TeamboxAPI
 
   class Project < Base
 
-    def self.collection_path(attributes, prefix_options = {}, query_options = nil)
+    def self.collection_path(organization_id, prefix_options = {}, query_options = nil)
         prefix_options, query_options = split_options(prefix_options) if query_options.nil?
-        "#{prefix(prefix_options)}organizations/#{attributes[:organization_id].to_s}/#{collection_name}.#{format.extension}#{query_string(query_options)}"
+        "#{prefix(prefix_options)}organizations/#{organization_id.to_s}/#{collection_name}.#{format.extension}#{query_string(query_options)}"
     end
     
 
@@ -133,10 +133,14 @@ module TeamboxAPI
     end
 
     def create
-      connection.post(collection_path(attributes) + '?' + encode, nil, self.class.headers).tap do |response|
+      connection.post(collection_path + '?' + encode, nil, self.class.headers).tap do |response|
         self.id = id_from_response(response)
         load_attributes_from_response(response)
       end
+    end
+
+    def organization_id
+      attributes[:organization_id]
     end
 
   end
@@ -153,12 +157,44 @@ module TeamboxAPI
 
   class Task < Base
 
-    #self.site += '/projects/:project_id/'
+    self.site += 'projects/:project_id/'
+
+    #def self.collection_path(prefix_options = {}, query_options = nil)
+    #    prefix_options, query_options = split_options(prefix_options) if query_options.nil?
+    #    "#{prefix(prefix_options)}task_lists/#{task_list_id.to_s}/#{collection_name}.#{format.extension}#{query_string(query_options)}"
+    #end
+
+    #def collection_path(options = nil)
+    #    self.class.collection_path(attributes[:task_list_id], options || prefix_options)
+    #end
 
     def self.instantiate_collection(collection, prefix_options = {})
         objects = collection["objects"]
         objects.collect! { |record| instantiate_record(record, prefix_options) }
     end
+
+    def encode(options={})
+      val = []
+      attributes.each_pair do |key, value|
+        val << "#{URI.escape key}=#{URI.escape value}" rescue nil
+      end
+      val.join('&')
+    end
+
+    def update
+       connection.put(element_path(prefix_options) + '?' + encode, nil, self.class.headers).tap do |response|
+          load_attributes_from_response(response)
+       end
+    end
+   
+    def create
+      connection.post(collection_path + '?' + encode, nil, self.class.headers).tap do |response|
+        self.id = id_from_response(response)
+        load_attributes_from_response(response)
+      end
+    end
+
+
   end
 
   class Comment < Base

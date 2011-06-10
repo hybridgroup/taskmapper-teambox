@@ -23,14 +23,14 @@ module TicketMaster::Provider
       end
 
       def ticket!(*options)
-        options[0].merge!(:identifier => id) if options.first.is_a?(Hash)
+        options[0].merge!(:project_id => id) if options.first.is_a?(Hash)
         provider_parent(self.class)::Ticket.create(*options)
       end
       
       # copy from this.copy(that) copies that into this
       def copy(project)
         project.tickets.each do |ticket|
-          copy_ticket = self.ticket!(:title => ticket.title, :description => ticket.description)
+          copy_ticket = self.ticket!(:title => ticket.name)
           ticket.comments.each do |comment|
             copy_ticket.comment!(:body => comment.body)
             sleep 1
