@@ -159,14 +159,15 @@ module TeamboxAPI
 
     self.site += 'projects/:project_id/'
 
-    #def self.collection_path(prefix_options = {}, query_options = nil)
-    #    prefix_options, query_options = split_options(prefix_options) if query_options.nil?
-    #    "#{prefix(prefix_options)}task_lists/#{task_list_id.to_s}/#{collection_name}.#{format.extension}#{query_string(query_options)}"
-    #end
+    def self.collection_path(task_list_path, prefix_options = {}, query_options = nil)
+        prefix_options, query_options = split_options(prefix_options) if query_options.nil?
+        "#{prefix(prefix_options)}#{task_list_path}#{collection_name}.#{format.extension}#{query_string(query_options)}"
+    end
 
-    #def collection_path(options = nil)
-    #    self.class.collection_path(attributes[:task_list_id], options || prefix_options)
-    #end
+    def collection_path(options = nil)
+        task_list_path = "task_lists/#{attributes[:task_list_id]}/"
+        self.class.collection_path(task_list_path, options || prefix_options)
+    end
 
     def self.instantiate_collection(collection, prefix_options = {})
         objects = collection["objects"]
@@ -194,10 +195,36 @@ module TeamboxAPI
       end
     end
 
+    def self.find_every(options)
+          begin
+            case from = options[:from]
+            when Symbol
+              self.instantiate_collection(get(from, options[:params]))
+            when String
+              path = "#{from}#{query_string(options[:params])}"
+              self.instantiate_collection(connection.get(path, headers) || [])
+            else
+              prefix_options, query_options = split_options(options[:params])
+              path = self.collection_path(nil, prefix_options, query_options)
+              self.instantiate_collection( (connection.get(path, headers) || []), prefix_options )
+            end
+          rescue ActiveResource::ResourceNotFound
+            # Swallowing ResourceNotFound exceptions and return nil - as per
+            # ActiveRecord.
+            nil
+          end
+    end
 
   end
 
   class Comment < Base
+    self.site += 'projects/:project_id/tasks/:task_id/'
+
+    def self.instantiate_collection(collection, prefix_options = {})
+        objects = collection["objects"]
+        objects.collect! { |record| instantiate_record(record, prefix_options) }
+    end
+
   end
 
 end
