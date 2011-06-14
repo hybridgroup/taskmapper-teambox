@@ -47,6 +47,14 @@ module TicketMaster::Provider
         self.search(project_id, attributes)
       end
 
+      def project_id
+        self[:project_id]
+      end
+
+      def task_id
+        self[:id]
+      end
+
     end
   end
 end
