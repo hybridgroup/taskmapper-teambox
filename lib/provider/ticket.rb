@@ -55,6 +55,12 @@ module TicketMaster::Provider
         self[:id]
       end
 
+      def comment!(*options)
+        options[0].update(:project_id => project_id, :task_id => task_id) if options.first.is_a?(Hash)
+        provider_parent(self.class)::Comment.create(*options)
+      end
+      
+
     end
   end
 end

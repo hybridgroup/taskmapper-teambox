@@ -225,6 +225,20 @@ module TeamboxAPI
         objects.collect! { |record| instantiate_record(record, prefix_options) }
     end
 
+    def create
+      connection.post(collection_path + '?' + encode, nil, self.class.headers).tap do |response|
+        load_attributes_from_response(response)
+      end
+    end
+
+    def encode(options={})
+      val=[]
+      attributes.each_pair do |key, value|
+        val << "#{URI.escape key}=#{URI.escape value}" rescue nil
+      end
+      val.join('&')
+    end
+
   end
 
 end
