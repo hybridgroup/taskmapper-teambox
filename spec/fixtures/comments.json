@@ -1,20 +1,79 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<card_comments type="array">
-    <comment>
-      <content>Hi</content>
-      <created_by url="http://localhost:8080/api/v2/users/21.xml">
-        <name>Jeff</name>
-        <login>j</login>
-      </created_by>
-      <created_at type="datetime">2010-03-10T21:16:39Z</created_at>
-    </comment>
-    <comment>
-      <content>hello there</content>
-      <created_by url="http://localhost:8080/api/v2/users/1.xml">
-        <name>bonna</name>
-        <login>bonna</login>
-      </created_by>
-      <created_at type="datetime">2010-03-10T21:16:02Z</created_at>
-    </comment>
-</card_comments>
+{
+  "type": "List",
+  "references": [
+    {
+      "type": "Project",
+      "permalink": "teambox-api-example-project",
+      "archived": false,
+      "owner_user_id": 111245,
+      "updated_at": "2010-08-28 14:20:35 +0000",
+      "organization_id": 14076,
+      "created_at": "2010-07-30 20:16:55 +0000",
+      "name": "Teambox Api Example Project",
+      "id": 23216
+    },
+    {
+      "type": "Task",
+      "is_private": false,
+      "user_id": 111245,
+      "comments_count": 1,
+      "project_id": 23216,
+      "recent_comment_ids": [
+        646695
+      ],
+      "updated_at": "2010-08-30 20:16:57 +0000",
+      "first_comment_id": 646695,
+      "watchers": [
+        111245
+      ],
+      "simple": false,
+      "created_at": "2010-08-28 22:21:55 +0000",
+      "name": "What to do with the API",
+      "id": 85915
+    },
+    {
+      "type": "Comment",
+      "user_id": 111245,
+      "target_type": "Task",
+      "target_id": 85915,
+      "project_id": 23216,
+      "updated_at": "2010-08-30 20:16:57 +0000",
+      "created_at": "2010-08-30 20:16:57 +0000",
+      "body_html": "<p>Anyone have any ideas?</p>\n",
+      "id": 646695,
+      "hours": null,
+      "body": "Anyone have any ideas?"
+    },
+    {
+      "type": "User",
+      "first_name": "API",
+      "micro_avatar_url": "http://www.gravatar.com/avatar/db32dac52f3a034fa28a149f20bae5b4?size=24&default=identicon",
+      "biography": null,
+      "locale": "en",
+      "updated_at": "2010-10-25 09:58:45 +0000",
+      "time_zone": "Eastern Time (US & Canada)",
+      "last_name": "Man",
+      "avatar_url": "http://www.gravatar.com/avatar/db32dac52f3a034fa28a149f20bae5b4?size=48&default=identicon",
+      "created_at": "2010-07-30 20:16:55 +0000",
+      "username": "example_api_user",
+      "id": 111245,
+      "utc_offset": -18000
+    }
+  ],
+  "objects": [
+    {
+      "type": "Comment",
+      "user_id": 111245,
+      "target_type": "Task",
+      "target_id": 85915,
+      "project_id": 23216,
+      "updated_at": "2010-08-30 20:16:57 +0000",
+      "created_at": "2010-08-30 20:16:57 +0000",
+      "body_html": "<p>Anyone have any ideas?</p>\n",
+      "id": 646695,
+      "hours": null,
+      "body": "Anyone have any ideas?"
+    }
+  ]
+}
 

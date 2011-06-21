@@ -2,19 +2,32 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Ticketmaster::Provider::Teambox::Project" do
   before(:all) do
-    headers = {'Authorization' => 'Basic OjAwMDAwMA==', 'Accept' => 'application/json'}
-    headers_post = {'Authorization' => 'Basic OjAwMDAwMA==', 'Content-Type' => 'application/json'}
-    @id = '12345'
+    headers_get = {'Authorization' => 'OAuth 01234567890abcdef', 'Accept' => 'application/json'}  
+    headers = {'Authorization' => 'OAuth 01234567890abcdef', 'Content-Type' => 'application/json'} 
+    @project_id = 23216
     ActiveResource::HttpMock.respond_to do |mock|
-      mock.get '/api/v2/projects.json', headers, fixture_for('projects'), 200
-      mock.get '/api/v2/projects/test_project.json', headers, fixture_for('projects/test_project'), 200
-      mock.get '/api/v2/projects/dumb.json', headers, fixture_for('projects/create'), 404
-      mock.post '/api/v2/projects.json', headers_post, '', 200, 'Location' => '/projects/dumb'
+      mock.get '/api/1/projects.json', headers_get, fixture_for('projects'), 200
+      mock.get '/api/1/projects/23216.json', headers_get, fixture_for('projects/23216'), 200
+      mock.post '/api/1/organizations/56789/projects.json?name=New%20Project&permalink=new-project&organization_id=56789', headers, '', 201
+      mock.put '/api/1/projects/23216.json?name=some%20new%20name&permalink=teambox-api-example-project&created_at=2010-07-30%2020:16:55%20+0000&updated_at=2010-08-28%2014:20:35%20+0000', headers, '', 200
     end
-  end
 
-  before(:each) do 
-    @ticketmaster = TicketMaster.new(:teambox, {:username => 'anymoto', :password => '000000'})
+    #stubs = Faraday::Adapter::Test::Stubs.new do |stub|
+    #  ACCESS_TOKEN = { "access_token" => "01234567890abcdef", "username" => "anymoto" } 
+    #  stub.post('/oauth/token') { [200, {}, ACCESS_TOKEN.to_json] }
+    #end
+
+    #new_method = Faraday::Connection.method(:new)
+    #Faraday::Connection.stub(:new) do |*args|
+    #  connection = new_method.call(*args) do |builder|
+    #    builder.adapter :test, stubs
+    #  end
+    #end
+
+    @ticketmaster = TicketMaster.new(:teambox, {:username => "anymoto",
+                                                :password => "000000", 
+                                                :client_id => 'abcdef000000', 
+                                                :client_secret => 'ghijk11111'})
     @klass = TicketMaster::Provider::Teambox::Project
   end
 
@@ -24,32 +37,38 @@ describe "Ticketmaster::Provider::Teambox::Project" do
   end
 
   it "should be able to load projects from an array of id's" do 
-    @projects = @ticketmaster.projects([@identifier])
+    @projects = @ticketmaster.projects([@project_id])
     @projects.should be_an_instance_of(Array)
     @projects.first.should be_an_instance_of(@klass)
-    @projects.first.id.should == @id
+    @projects.first.id.should == @project_id
   end
 
   it "should be able to load all projects from attributes" do 
-    @projects = @ticketmaster.projects(:id => 'test_project')
+    @projects = @ticketmaster.projects(:id => 23216)
     @projects.should be_an_instance_of(Array)
     @projects.first.should be_an_instance_of(@klass)
-    @projects.first.id.should == '12345'
+    @projects.first.id.should == 23216
   end
 
   it "should be able to find a project" do 
     @ticketmaster.project.should == @klass
-    @ticketmaster.project.find(@id).should be_an_instance_of(@klass)
+    @ticketmaster.project.find(@project_id).should be_an_instance_of(@klass)
   end
 
   it "should be able to find a project by identifier" do 
-    @ticketmaster.project(@id).should be_an_instance_of(@klass)
-    @ticketmaster.project(@id).id.should == @id
+    @ticketmaster.project(@project_id).should be_an_instance_of(@klass)
+    @ticketmaster.project(@project_id).id.should == @project_id
   end
 
   it "should be able to create a new project" do 
-    @project = @ticketmaster.project!(:name => 'Another project', :organization_id => '12345', :permalink => 'another-project').should be_an_instance_of(@klass)
+    @project = @ticketmaster.project!(:name => 'New Project', :organization_id => '56789', :permalink => 'new-project').should be_an_instance_of(@klass)
   end
+
+  it "should be able to update and save a project" do
+    @project = @ticketmaster.project(@project_id)
+    @project.update!(:name => 'some new name').should == true
+  end
+  
 
 
 end

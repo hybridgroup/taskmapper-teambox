@@ -1,83 +1,113 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<cards type="array">
-  <card>
-    <name>Ticket 1</name>
-    <description>
-    </description>
-    <card_type>
-      <name>Story</name>
-    </card_type>
-    <id type="integer">409</id>
-    <number type="integer">42</number>
-    <project url="http://myserver.com/api/v2/projects/test_project.xml">
-      <name>test project</name>
-      <identifier>test_project</identifier>
-    </project>
-    <version type="integer">1</version>
-    <project_card_rank type="integer">1</project_card_rank>
-    <created_on type="datetime">2009-10-14T09:14:54Z</created_on>
-    <modified_on type="datetime">2009-10-14T09:14:54Z</modified_on>
-    <modified_by url="http://myserver.com/api/v2/users/1.xml">
-      <name>anne</name>
-      <login>anne</login>
-    </modified_by>
-    <created_by url="http://myserver.com/api/v2/users/2.xml">
-      <name>jane</name>
-      <login>jane</login>
-    </created_by>
-    <properties type="array">
-      <property type_description="Managed text list" hidden="false">
-        <name>Status</name>
-        <value>Closed</value>
-      </property>
-      <property type_description="Managed number list" hidden="false">
-        <name>Estimate</name>
-        <value>4</value>
-      </property>
-      <property type_description="Managed text list" hidden="false">
-        <name>Priority</name>
-        <value nil="true"/>
-      </property>
-    </properties>
-  </card>
-  <card>
-    <name>Automatically update event status when event date has passed</name>
-    <description>
-    </description>
-    <card_type>
-      <name>Story</name>
-    </card_type>
-    <id type="integer">410</id>
-    <number type="integer">43</number>
-    <project url="http://myserver.com/api/v2/projects/test_project.xml">
-      <name>test project</name>
-      <identifier>test_project</identifier>
-    </project>
-    <version type="integer">1</version>
-    <project_card_rank type="integer">1</project_card_rank>
-    <created_on type="datetime">2009-10-14T09:14:54Z</created_on>
-    <modified_on type="datetime">2009-10-14T09:14:54Z</modified_on>
-    <modified_by url="http://myserver.com/api/v2/users/1.xml">
-      <name>anne</name>
-      <login>anne</login>
-    </modified_by>
-    <created_by url="http://myserver.com/api/v2/users/2.xml">
-      <name>jane</name>
-      <login>jane</login>
-    </created_by>
-    <properties type="array">
-      <property type_description="Managed text list" hidden="false">
-        <name>Status</name>
-        <value>Closed</value>
-      </property>
-      <property type_description="Managed number list" hidden="false">
-        <name>Estimate</name>
-        <value>4</value>
-      </property>
-      <property type_description="Managed text list" hidden="false">
-        <name>Priority</name>
-        <value nil="true"/>
-      </property>
-    </properties>
-  </card>
-</cards>
+{
+  "type": "List",
+  "references": [
+    {
+      "type": "Project",
+      "permalink": "teambox-api-example-project",
+      "archived": false,
+      "owner_user_id": 111245,
+      "updated_at": "2010-08-28 14:20:35 +0000",
+      "organization_id": 14076,
+      "created_at": "2010-07-30 20:16:55 +0000",
+      "name": "Teambox Api Example Project",
+      "id": 23216
+    },
+    {
+      "type": "TaskList",
+      "user_id": 111245,
+      "position": 1,
+      "archived": false,
+      "project_id": 23216,
+      "updated_at": "2010-07-30 20:16:56 +0000",
+      "created_at": "2010-07-28 21:06:55 +0000",
+      "name": "Things to do with the API",
+      "id": 30232
+    },
+    {
+      "type": "User",
+      "first_name": "API",
+      "micro_avatar_url": "http://www.gravatar.com/avatar/db32dac52f3a034fa28a149f20bae5b4?size=24&default=identicon",
+      "biography": null,
+      "locale": "en",
+      "updated_at": "2010-10-25 09:58:45 +0000",
+      "time_zone": "Eastern Time (US & Canada)",
+      "last_name": "Man",
+      "avatar_url": "http://www.gravatar.com/avatar/db32dac52f3a034fa28a149f20bae5b4?size=48&default=identicon",
+      "created_at": "2010-07-30 20:16:55 +0000",
+      "username": "example_api_user",
+      "id": 111245,
+      "utc_offset": -18000
+    }
+  ],
+  "objects": [
+    {
+      "type": "Task",
+      "is_private": false,
+      "assigned_id": null,
+      "user_id": 111245,
+      "position": 1,
+      "status": 0,
+      "task_list_id": 30232,
+      "comments_count": 2,
+      "project_id": 23216,
+      "recent_comment_ids": [
+
+      ],
+      "updated_at": "2010-08-29 20:16:56 +0000",
+      "first_comment_id": null,
+      "watchers": [
+        111245
+      ],
+      "created_at": "2010-08-28 21:31:55 +0000",
+      "name": "iPhone App",
+      "id": 85915
+    },
+    {
+      "type": "Task",
+      "is_private": false,
+      "assigned_id": null,
+      "user_id": 111245,
+      "position": 1,
+      "status": 0,
+      "task_list_id": 30232,
+      "comments_count": 0,
+      "project_id": 23216,
+      "recent_comment_ids": [
+
+      ],
+      "updated_at": "2010-08-30 20:16:56 +0000",
+      "first_comment_id": null,
+      "watchers": [
+        111245
+      ],
+      "created_at": "2010-08-30 21:31:55 +0000",
+      "name": "Android App",
+      "id": 85916
+    },
+    {
+      "type": "Task",
+      "is_private": false,
+      "assigned_id": null,
+      "user_id": 111245,
+      "position": 1,
+      "status": 0,
+      "task_list_id": 30232,
+      "comments_count": 0,
+      "project_id": 23216,
+      "recent_comment_ids": [
+
+      ],
+      "updated_at": "2010-08-30 21:19:00 +0000",
+      "first_comment_id": null,
+      "watchers": [
+        111245
+      ],
+      "created_at": "2010-08-30 21:10:45 +0000",
+      "name": "Fix e-mail notification",
+      "id": 85917
+    }
+
+
+  ]
+}
+

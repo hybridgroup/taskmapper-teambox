@@ -1,0 +1,62 @@
+{
+  "user_id": 111245,
+  "assigned_id": null,
+  "is_private": false,
+  "type": "Task",
+  "references": [
+    {
+      "type": "Project",
+      "permalink": "teambox-api-example-project",
+      "archived": false,
+      "owner_user_id": 111245,
+      "updated_at": "2010-08-28 14:20:35 +0000",
+      "organization_id": 14076,
+      "created_at": "2010-07-30 20:16:55 +0000",
+      "name": "Teambox Api Example Project",
+      "id": 23216
+    },
+    {
+      "type": "TaskList",
+      "user_id": 111245,
+      "position": 1,
+      "archived": false,
+      "project_id": 23216,
+      "updated_at": "2010-07-30 20:16:56 +0000",
+      "created_at": "2010-07-28 21:06:55 +0000",
+      "name": "Things to do with the API",
+      "id": 30232
+    },
+    {
+      "type": "User",
+      "first_name": "API",
+      "micro_avatar_url": "http://www.gravatar.com/avatar/db32dac52f3a034fa28a149f20bae5b4?size=24&default=identicon",
+      "biography": null,
+      "locale": "en",
+      "updated_at": "2010-10-25 09:58:45 +0000",
+      "time_zone": "Eastern Time (US & Canada)",
+      "last_name": "Man",
+      "avatar_url": "http://www.gravatar.com/avatar/db32dac52f3a034fa28a149f20bae5b4?size=48&default=identicon",
+      "created_at": "2010-07-30 20:16:55 +0000",
+      "username": "example_api_user",
+      "id": 111245,
+      "utc_offset": -18000
+    }
+  ],
+  "position": 1,
+  "task_list_id": 30232,
+  "status": 0,
+  "comments_count": 2,
+  "project_id": 23216,
+  "updated_at": "2010-08-29 20:16:56 +0000",
+  "recent_comment_ids": [
+
+  ],
+  "watchers": [
+    111245
+  ],
+  "first_comment_id": null,
+  "name": "iPhone App",
+  "created_at": "2010-08-28 21:31:55 +0000",
+  "id": 85915
+}
+

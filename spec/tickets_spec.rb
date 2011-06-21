@@ -2,22 +2,35 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Ticketmaster::Provider::Teambox::Ticket" do
   before(:all) do
-    headers = {'Authorization' => 'Basic OjAwMDAwMA==', 'Accept' => 'application/json'}
-    headers_post_put = {'Authorization' => 'Basic OjAwMDAwMA==', 'Content-Type' => 'application/json'}
-    @project_id = '12345'
+    headers_get = {'Authorization' => 'OAuth 01234567890abcdef', 'Accept' => 'application/json'}  
+    headers = {'Authorization' => 'OAuth 01234567890abcdef', 'Content-Type' => 'application/json'} 
+    @project_id = 23216
     ActiveResource::HttpMock.respond_to do |mock|
-      mock.get '/api/v2/projects.json', headers, fixture_for('projects'), 200
-      mock.get '/api/v2/projects/test_project.json', headers, fixture_for('projects/test_project'), 200
-      mock.get '/api/v2/projects/test_project/cards/42.json', headers, fixture_for('tickets/42'), 200
-      mock.get '/api/v2/projects/test_project/cards.json', headers, fixture_for('tickets'), 200
-      mock.get '/api/v2/projects/test_project/cards/42.json', headers, fixture_for('tickets/42'), 200
-      mock.put '/api/v2/projects/test_project/cards/42.json', headers_post_put, '', 200
-      mock.post '/api/v2/projects/test_project/cards.json', headers_post_put, '', 200
+      mock.get '/api/1/projects.json', headers_get, fixture_for('projects'), 200
+      mock.get '/api/1/projects/23216.json', headers_get, fixture_for('projects/23216'), 200
+      mock.get '/api/1/projects/23216/tasks/85915.json', headers_get, fixture_for('tasks/85915'), 200
+      mock.get '/api/1/projects/23216/tasks.json', headers_get, fixture_for('tasks'), 200
+      mock.get '/api/1/projects/23216/tasks/85915.json', headers_get, fixture_for('tasks/85915'), 200
+      mock.put '/api/1/projects/23216/tasks/85915.json?name=New%20ticket%20name&updated_at=2010-08-29%2020:16:56%20+0000', headers, '', 200
+      mock.post '/api/1/projects/23216/task_lists/30232/tasks.json?name=Mobile%20App', headers, '', 200
     end
-  end
 
-  before(:each) do 
-    @ticketmaster = TicketMaster.new(:teambox, {:username => 'anymoto', :password => '000000'})
+    #stubs = Faraday::Adapter::Test::Stubs.new do |stub|
+        #ACCESS_TOKEN = { "access_token" => "01234567890abcdef", "refresh_token" => "01234567890abcdef", "username" => "anymoto" } 
+    #    stub.post('/oauth/token') { [200, {}, ACCESS_TOKEN.to_json] }
+    #end
+
+    #new_method = Faraday::Connection.method(:new)
+    #Faraday::Connection.stub(:new) do |*args|
+    #  connection = new_method.call(*args) do |builder|
+    #    builder.adapter :test, stubs
+    #  end
+    #end
+
+    @ticketmaster = TicketMaster.new(:teambox, {:username => "anymoto",
+                                                :password => "000000", 
+                                                :client_id => 'abcdef000000', 
+                                                :client_secret => 'ghijk11111'})
     @project = @ticketmaster.project(@project_id)
     @klass = TicketMaster::Provider::Teambox::Ticket
   end
@@ -28,17 +41,17 @@ describe "Ticketmaster::Provider::Teambox::Ticket" do
   end
 
   it "should be able to load all tickets based on an array of id's" do
-    @tickets = @project.tickets([42])
+    @tickets = @project.tickets([85915])
     @tickets.should be_an_instance_of(Array)
     @tickets.first.should be_an_instance_of(@klass)
-    @tickets.first.name.should == 'Ticket 1'
+    @tickets.first.name.should == 'iPhone App'
   end
 
   it "should be able to load all tickets based on attributes" do
-    @tickets = @project.tickets(:project_id => 42)
+    @tickets = @project.tickets(:id => 85915)
     @tickets.should be_an_instance_of(Array)
     @tickets.first.should be_an_instance_of(@klass)
-    @tickets.first.name.should == 'Ticket 1'
+    @tickets.first.name.should == 'iPhone App'
   end
 
   it "should return the ticket class" do
@@ -46,25 +59,25 @@ describe "Ticketmaster::Provider::Teambox::Ticket" do
   end
 
   it "should be able to load a single ticket" do
-    @ticket = @project.ticket(42)
+    @ticket = @project.ticket(85915)
     @ticket.should be_an_instance_of(@klass)
-    @ticket.name.should == 'Ticket 1'
+    @ticket.name.should == 'iPhone App'
   end
 
   it "shoule be able to load a single ticket based on attributes" do
-    @ticket = @project.ticket(:project_id => 42)
+    @ticket = @project.ticket(:id => 85915)
     @ticket.should be_an_instance_of(@klass)
-    @ticket.name.should == 'Ticket 1'
+    @ticket.name.should == 'iPhone App'
   end
 
   it "should be able to update and save a ticket" do 
-    @ticket = @project.ticket(42)
-    @ticket.description = 'New ticket description'
+    @ticket = @project.ticket(85915)
+    @ticket.name = 'New ticket name'
     @ticket.save.should == true
   end
 
   it "should be able to create a ticket" do 
-    @ticket = @project.ticket!(:title => 'Ticket #12', :description => 'Body')
+    @ticket = @project.ticket!(:name => 'Mobile App', :task_list_id => 30232)
     @ticket.should be_an_instance_of(@klass)
   end
 

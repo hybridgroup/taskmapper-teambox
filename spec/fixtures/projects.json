@@ -1,57 +1,69 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<projects type="array">
-  <project>
-    <name>Test Project</name>
-    <identifier>test_project</identifier>
-    <description>Test Project description</description>
-    <created_at type="datetime">2009-10-20T10:37:52Z></created_at>
-    <updated_at type="datetime">2009-10-21T00:47:55Z></updated_at>
-    <created_by url="http://localhost:8080/api/v2/users/8.xml">
-      <name>anne</name>
-      <login>anne</login>
-    </created_by>
-    <modified_by url="http://localhost:8080/api/v2/users/2.xml">
-      <name>bonna</name>
-      <login>bonna</login>
-    </modified_by>
-    <keywords>
-      <keyword>card</keyword>
-      <keyword>#</keyword>
-    </keywords>  
-    <template type="boolean">false</template>
-    <email_address></email_address>
-    <email_sender_name></email_sender_name>
-    <date_format>%d %b %Y</date_format>
-    <time_zone>Beijing</time_zone>
-    <precision type="integer">2</precision>
-    <anonymous_accessible type="boolean">false</anonymous_accessible>
-    <auto_enroll_user_type nil="true"></auto_enroll_user_type>
-  </project>
-  <project>
-    <name>Another Project</name>
-    <identifier>another_project</identifier>
-    <description>Another Project description</description>
-    <created_at type="datetime">2010-11-20T10:37:52Z></created_at>
-    <updated_at type="datetime">2010-11-21T00:47:55Z></updated_at>
-    <created_by url="http://localhost:8080/api/v2/users/8.xml">
-      <name>anne</name>
-      <login>anne</login>
-    </created_by>
-    <modified_by url="http://localhost:8080/api/v2/users/2.xml">
-      <name>bonna</name>
-      <login>bonna</login>
-    </modified_by>
-    <keywords>
-      <keyword>card</keyword>
-      <keyword>#</keyword>
-    </keywords>  
-    <template type="boolean">false</template>
-    <email_address></email_address>
-    <email_sender_name></email_sender_name>
-    <date_format>%d %b %Y</date_format>
-    <time_zone>Beijing</time_zone>
-    <precision type="integer">2</precision>
-    <anonymous_accessible type="boolean">false</anonymous_accessible>
-    <auto_enroll_user_type nil="true"></auto_enroll_user_type>
-  </project>
-</projects>
+{
+  "type": "List",
+  "references": [
+    {
+      "type": "Organization",
+      "description": null,
+      "updated_at": "2010-08-28 14:20:34",
+      "domain": null,
+      "time_zone": "Eastern Time (US & Canada)",
+      "language": "en",
+      "logo_url": "/logos/original/missing.png",
+      "permalink": "user-example_api_user",
+      "created_at": "2010-08-28 14:20:34 +0000",
+      "name": "Projects from API Man",
+      "id": 14076
+    },
+    {
+      "type": "User",
+      "avatar_url": "http://www.gravatar.com/avatar/db32dac52f3a034fa28a149f20bae5b4?size=48&default=identicon",
+      "first_name": "API",
+      "micro_avatar_url": "http://www.gravatar.com/avatar/db32dac52f3a034fa28a149f20bae5b4?size=24&default=identicon",
+      "biography": null,
+      "locale": "en",
+      "updated_at": "2010-10-25 09:58:45 +0000",
+      "time_zone": "Eastern Time (US & Canada)",
+      "last_name": "Man",
+      "created_at": "2010-07-30 20:16:55 +0000",
+      "username": "example_api_user",
+      "id": 111245,
+      "utc_offset": -18000
+    }
+  ],
+  "objects": [
+    {
+      "type": "Project",
+      "organization_id": 14076,
+      "updated_at": "2010-08-28 14:20:35 +0000",
+      "owner_user_id": 111245,
+      "permalink": "teambox-api-example-project",
+      "created_at": "2010-07-30 20:16:55 +0000",
+      "name": "Teambox Api Example Project",
+      "archived": false,
+      "id": 23216
+    },
+    {
+      "type": "Project",
+      "organization_id": 14076,
+      "updated_at": "2010-08-30 16:00:19 +0000",
+      "owner_user_id": 111245,
+      "permalink": "teambox-api-second-project",
+      "created_at": "2010-08-30 16:00:19 +0000",
+      "name": "Teambox Api Second Project",
+      "archived": false,
+      "id": 23217
+    },
+    {
+      "type": "Project",
+      "organization_id": 14076,
+      "updated_at": "2010-09-01 11:54:00 +0000",
+      "owner_user_id": 111245,
+      "permalink": "teambox-api-third-project",
+      "created_at": "2010-09-01 11:54:00 +0000",
+      "name": "Teambox Api Third Project",
+      "archived": false,
+      "id": 23218
+    }
+  ]
+}
+
