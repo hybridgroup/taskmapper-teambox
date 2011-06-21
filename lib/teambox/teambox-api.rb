@@ -99,11 +99,15 @@ module TeamboxAPI
 
   class Project < Base
 
-    def self.collection_path(organization_id, prefix_options = {}, query_options = nil)
+    def self.collection_path(organization_path, prefix_options = {}, query_options = nil)
         prefix_options, query_options = split_options(prefix_options) if query_options.nil?
-        "#{prefix(prefix_options)}organizations/#{organization_id.to_s}/#{collection_name}.#{format.extension}#{query_string(query_options)}"
+        "#{prefix(prefix_options)}#{organization_path}#{collection_name}.#{format.extension}#{query_string(query_options)}"
     end
     
+    def collection_path(options = nil)
+        organization_path = "organizations/#{attributes[:organization_id].to_s}/"
+        self.class.collection_path(organization_path, options || prefix_options)
+    end
 
     def self.instantiate_collection(collection, prefix_options = {})
       objects = collection["objects"]
@@ -142,6 +146,28 @@ module TeamboxAPI
     def organization_id
       attributes[:organization_id]
     end
+
+    
+    def self.find_every(options)
+          begin
+            case from = options[:from]
+            when Symbol
+              self.instantiate_collection(get(from, options[:params]))
+            when String
+              path = "#{from}#{query_string(options[:params])}"
+              self.instantiate_collection(connection.get(path, headers) || [])
+            else
+              prefix_options, query_options = split_options(options[:params])
+              path = self.collection_path(nil, prefix_options, query_options)
+              self.instantiate_collection( (connection.get(path, headers) || []), prefix_options )
+            end
+          rescue ActiveResource::ResourceNotFound
+            # Swallowing ResourceNotFound exceptions and return nil - as per
+            # ActiveRecord.
+            nil
+          end
+    end
+
 
   end
 
