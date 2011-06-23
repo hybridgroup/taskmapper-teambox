@@ -5,6 +5,7 @@ This is a provider for [ticketmaster](http://ticketrb.com). It provides interope
 # Usage and Examples
 
 First we have to instantiate a new ticketmaster instance:
+
     teambox = TicketMaster.new(:teambox, {:username => "foo", :password => "bar", :client_id => "your_client_id", :client_secret => "your_client_secret"})
 
 If you do not pass in username, password, client id and client secret you won't get any information.
