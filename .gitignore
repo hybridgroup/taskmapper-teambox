@@ -41,3 +41,7 @@ pkg
 # For vim:
 *.swp
 
+## PROJECT::SPECIFIC
+.rvmrc
+
+
