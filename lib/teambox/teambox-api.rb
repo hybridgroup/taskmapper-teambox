@@ -149,6 +149,8 @@ module TeamboxAPI
 
     
     def self.find_every(options)
+          #add :count => 0 in order to retrieve objects with no limits. Default is 20 objects per request.
+          options.merge!(:params => {:count => 0})
           begin
             case from = options[:from]
             when Symbol
@@ -222,6 +224,8 @@ module TeamboxAPI
     end
 
     def self.find_every(options)
+          #add :count => 0 in order to retrieve objects with no limits. Default is 20 objects per request.
+          options[:params].merge!(:count => 0)
           begin
             case from = options[:from]
             when Symbol

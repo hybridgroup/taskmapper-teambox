@@ -38,7 +38,7 @@ module TicketMaster::Provider
       end
 
       def self.search(project_id, task_id, options = {}, limit = 1000)
-        comments = API.find(:all, :params => {:project_id => project_id, :task_id => task_id}).collect { |comment| self.new comment }
+        comments = API.find(:all, :params => {:project_id => project_id, :task_id => task_id, :count => 0}).collect { |comment| self.new comment }
       end
 
       def updated_at
