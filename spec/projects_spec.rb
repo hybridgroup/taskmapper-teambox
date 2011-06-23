@@ -6,7 +6,7 @@ describe "Ticketmaster::Provider::Teambox::Project" do
     headers = {'Authorization' => 'OAuth 01234567890abcdef', 'Content-Type' => 'application/json'} 
     @project_id = 23216
     ActiveResource::HttpMock.respond_to do |mock|
-      mock.get '/api/1/projects.json', headers_get, fixture_for('projects'), 200
+      mock.get '/api/1/projects.json?count=0', headers_get, fixture_for('projects'), 200
       mock.get '/api/1/projects/23216.json', headers_get, fixture_for('projects/23216'), 200
       mock.post '/api/1/organizations/56789/projects.json?name=New%20Project&permalink=new-project&organization_id=56789', headers, '', 201
       mock.put '/api/1/projects/23216.json?name=some%20new%20name&permalink=teambox-api-example-project&created_at=2010-07-30%2020:16:55%20+0000&updated_at=2010-08-28%2014:20:35%20+0000', headers, '', 200

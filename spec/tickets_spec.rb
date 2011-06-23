@@ -9,7 +9,7 @@ describe "Ticketmaster::Provider::Teambox::Ticket" do
       mock.get '/api/1/projects.json', headers_get, fixture_for('projects'), 200
       mock.get '/api/1/projects/23216.json', headers_get, fixture_for('projects/23216'), 200
       mock.get '/api/1/projects/23216/tasks/85915.json', headers_get, fixture_for('tasks/85915'), 200
-      mock.get '/api/1/projects/23216/tasks.json', headers_get, fixture_for('tasks'), 200
+      mock.get '/api/1/projects/23216/tasks.json?count=0', headers_get, fixture_for('tasks'), 200
       mock.get '/api/1/projects/23216/tasks/85915.json', headers_get, fixture_for('tasks/85915'), 200
       mock.put '/api/1/projects/23216/tasks/85915.json?name=New%20ticket%20name&updated_at=2010-08-29%2020:16:56%20+0000', headers, '', 200
       mock.post '/api/1/projects/23216/task_lists/30232/tasks.json?name=Mobile%20App', headers, '', 200

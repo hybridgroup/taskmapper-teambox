@@ -6,9 +6,9 @@ describe "Ticketmaster::Provider::Teambox::Comment" do
       headers = {'Authorization' => 'OAuth 01234567890abcdef', 'Content-Type' => 'application/json'} 
       ActiveResource::HttpMock.respond_to do |mock|
         mock.get '/api/1/projects/23216.json', headers_get, fixture_for('projects/23216'), 200
-        mock.get '/api/1/projects/23216/tasks.json', headers_get, fixture_for('tasks'), 200
+        mock.get '/api/1/projects/23216/tasks.json?count=0', headers_get, fixture_for('tasks'), 200
         mock.get '/api/1/projects/23216/tasks/85915.json', headers_get, fixture_for('tasks/85915'), 200
-        mock.get '/api/1/projects/23216/tasks/85915/comments.json', headers_get, fixture_for('comments'), 200
+        mock.get '/api/1/projects/23216/tasks/85915/comments.json?count=0', headers_get, fixture_for('comments'), 200
         mock.post '/api/1/projects/23216/tasks/85915/comments.json?body=New%20comment%20created.', headers, fixture_for('comments/create'), 200
       end
       @project_id = 23216
