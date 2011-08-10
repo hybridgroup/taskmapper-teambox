@@ -44,8 +44,7 @@ module TeamboxAPI
                                                     :client_secret => master.client_secret,
                                                     :username => master.username, 
                                                     :password => master.password,
-                                                    :scope => 'read_projects write_projects'},
-                                  'Content-Type' => 'application/x-www-form-urlencoded')
+                                                    :scope => 'read_projects write_projects'})
 
       OAuth2::AccessToken.new(consumer, response['access_token']).token
     
