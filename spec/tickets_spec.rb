@@ -4,18 +4,18 @@ VERBS = [:get, :post, :put, :delete]
 
 describe "Ticketmaster::Provider::Teambox::Ticket" do
   before(:each) do
-   #headers_get = {'Authorization' => 'OAuth 01234567890abcdef', 'Accept' => 'application/json'}  
-   #headers = {'Authorization' => 'OAuth 01234567890abcdef', 'Content-Type' => 'application/json'} 
-   #@project_id = 23216
-   #ActiveResource::HttpMock.respond_to do |mock|
-   #  mock.get '/api/1/projects.json', headers_get, fixture_for('projects'), 200
-   #  mock.get '/api/1/projects/23216.json', headers_get, fixture_for('projects/23216'), 200
-   #  mock.get '/api/1/projects/23216/tasks/85915.json', headers_get, fixture_for('tasks/85915'), 200
-   #  mock.get '/api/1/projects/23216/tasks.json?count=0', headers_get, fixture_for('tasks'), 200
-   #  mock.get '/api/1/projects/23216/tasks/85915.json', headers_get, fixture_for('tasks/85915'), 200
-   #  mock.put '/api/1/projects/23216/tasks/85915.json?name=New%20ticket%20name&updated_at=2010-08-29%2020:16:56%20+0000', headers, '', 200
-   #  mock.post '/api/1/projects/23216/task_lists/30232/tasks.json?name=Mobile%20App', headers, '', 200
-   #end
+   headers_get = {'Authorization' => 'OAuth ', 'Accept' => 'application/json'}  
+   headers = {'Authorization' => 'OAuth ', 'Content-Type' => 'application/json'} 
+   @project_id = 23216
+   ActiveResource::HttpMock.respond_to do |mock|
+     mock.get '/api/1/projects.json', headers_get, fixture_for('projects'), 200
+     mock.get '/api/1/projects/23216.json', headers_get, fixture_for('projects/23216'), 200
+     mock.get '/api/1/projects/23216/tasks/85915.json', headers_get, fixture_for('tasks/85915'), 200
+     mock.get '/api/1/projects/23216/tasks.json?count=0', headers_get, fixture_for('tasks'), 200
+     mock.get '/api/1/projects/23216/tasks/85915.json', headers_get, fixture_for('tasks/85915'), 200
+     mock.put '/api/1/projects/23216/tasks/85915.json?name=New%20ticket%20name&updated_at=2010-08-29%2020:16:56%20+0000', headers, '', 200
+     mock.post '/api/1/projects/23216/task_lists/30232/tasks.json?name=Mobile%20App', headers, '', 200
+   end
 
     @ticketmaster = TicketMaster.new(:teambox, {:username => "anymoto",
                                      :password => "000000", 
