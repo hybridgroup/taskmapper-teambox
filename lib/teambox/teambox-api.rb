@@ -30,23 +30,9 @@ module TeamboxAPI
       @auth_url = '/oauth/token'
       consumer = OAuth2::Client.new(master.client_id,
                                     master.client_secret,
-                                    {:site => 
-                                              {:url => master.site, 
-                                               :ssl => {:verify => OpenSSL::SSL::VERIFY_NONE,
-                                                        :ca_file => nil
-                                                       }
-                                              },
-                                    :authorize_url => @auth_url,
-                                    :parse_json => true})
+                                    {:site => master.site})
                                       
-      response = consumer.request(:post, @auth_url, {:grant_type => 'password', 
-                                                    :client_id => master.client_id,
-                                                    :client_secret => master.client_secret,
-                                                    :username => master.username, 
-                                                    :password => master.password,
-                                                    :scope => 'read_projects write_projects'})
-
-      OAuth2::AccessToken.new(consumer, response['access_token']).token
+      consumer.password.get_token(master.username, master.password, {:scope => 'read_projects write_projects'}).token
     
     end
 
