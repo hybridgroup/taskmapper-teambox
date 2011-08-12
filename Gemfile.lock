@@ -34,14 +34,15 @@ GEM
     ticketmaster (0.6.6)
       activeresource
       activeresource (>= 2.3.2)
-      activesupport (>= 2.3.2)
       activesupport
-      hashie
+      activesupport (>= 2.3.2)
       hashie (= 1.0.0)
+      hashie
       jeweler
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   bundler (~> 1.0.0)

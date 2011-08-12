@@ -31,9 +31,12 @@ module TeamboxAPI
       consumer = OAuth2::Client.new(master.client_id,
                                     master.client_secret,
                                     {:site => master.site})
-                                      
-      consumer.password.get_token(master.username, master.password, {:scope => 'read_projects write_projects'}).token
-    
+
+      begin
+        consumer.password.get_token(master.username, master.password, {:scope => 'read_projects write_projects'}).token
+      rescue 
+        warn "There was an error trying to retrieve OAuth token from teambox"
+      end
     end
 
     def token=(value)
@@ -42,7 +45,7 @@ module TeamboxAPI
       end
       @token = value
     end
-    
+
     def resources
       @resources ||= []
     end
@@ -85,13 +88,13 @@ module TeamboxAPI
   class Project < Base
 
     def self.collection_path(organization_path, prefix_options = {}, query_options = nil)
-        prefix_options, query_options = split_options(prefix_options) if query_options.nil?
-        "#{prefix(prefix_options)}#{organization_path}#{collection_name}.#{format.extension}#{query_string(query_options)}"
+      prefix_options, query_options = split_options(prefix_options) if query_options.nil?
+      "#{prefix(prefix_options)}#{organization_path}#{collection_name}.#{format.extension}#{query_string(query_options)}"
     end
-    
+
     def collection_path(options = nil)
-        organization_path = "organizations/#{attributes[:organization_id].to_s}/"
-        self.class.collection_path(organization_path, options || prefix_options)
+      organization_path = "organizations/#{attributes[:organization_id].to_s}/"
+      self.class.collection_path(organization_path, options || prefix_options)
     end
 
     def self.instantiate_collection(collection, prefix_options = {})
@@ -116,9 +119,9 @@ module TeamboxAPI
     end
 
     def update
-       connection.put(element_path(prefix_options) + '?' + encode, nil, self.class.headers).tap do |response|
-          load_attributes_from_response(response)
-       end
+      connection.put(element_path(prefix_options) + '?' + encode, nil, self.class.headers).tap do |response|
+        load_attributes_from_response(response)
+      end
     end
 
     def create
@@ -132,27 +135,27 @@ module TeamboxAPI
       attributes[:organization_id]
     end
 
-    
+
     def self.find_every(options)
-          #add :count => 0 in order to retrieve objects with no limits. Default is 20 objects per request.
-          options.merge!(:params => {:count => 0})
-          begin
-            case from = options[:from]
-            when Symbol
-              self.instantiate_collection(get(from, options[:params]))
-            when String
-              path = "#{from}#{query_string(options[:params])}"
-              self.instantiate_collection(connection.get(path, headers) || [])
-            else
-              prefix_options, query_options = split_options(options[:params])
-              path = self.collection_path(nil, prefix_options, query_options)
-              self.instantiate_collection( (connection.get(path, headers) || []), prefix_options )
-            end
-          rescue ActiveResource::ResourceNotFound
-            # Swallowing ResourceNotFound exceptions and return nil - as per
-            # ActiveRecord.
-            nil
-          end
+      #add :count => 0 in order to retrieve objects with no limits. Default is 20 objects per request.
+      options.merge!(:params => {:count => 0})
+      begin
+        case from = options[:from]
+        when Symbol
+          self.instantiate_collection(get(from, options[:params]))
+        when String
+          path = "#{from}#{query_string(options[:params])}"
+          self.instantiate_collection(connection.get(path, headers) || [])
+        else
+          prefix_options, query_options = split_options(options[:params])
+          path = self.collection_path(nil, prefix_options, query_options)
+          self.instantiate_collection( (connection.get(path, headers) || []), prefix_options )
+        end
+      rescue ActiveResource::ResourceNotFound
+        # Swallowing ResourceNotFound exceptions and return nil - as per
+        # ActiveRecord.
+        nil
+      end
     end
 
 
@@ -173,18 +176,18 @@ module TeamboxAPI
     self.site += 'projects/:project_id/'
 
     def self.collection_path(task_list_path, prefix_options = {}, query_options = nil)
-        prefix_options, query_options = split_options(prefix_options) if query_options.nil?
-        "#{prefix(prefix_options)}#{task_list_path}#{collection_name}.#{format.extension}#{query_string(query_options)}"
+      prefix_options, query_options = split_options(prefix_options) if query_options.nil?
+      "#{prefix(prefix_options)}#{task_list_path}#{collection_name}.#{format.extension}#{query_string(query_options)}"
     end
 
     def collection_path(options = nil)
-        task_list_path = "task_lists/#{attributes[:task_list_id]}/"
-        self.class.collection_path(task_list_path, options || prefix_options)
+      task_list_path = "task_lists/#{attributes[:task_list_id]}/"
+      self.class.collection_path(task_list_path, options || prefix_options)
     end
 
     def self.instantiate_collection(collection, prefix_options = {})
-        objects = collection["objects"]
-        objects.collect! { |record| instantiate_record(record, prefix_options) }
+      objects = collection["objects"]
+      objects.collect! { |record| instantiate_record(record, prefix_options) }
     end
 
     def encode(options={})
@@ -196,11 +199,11 @@ module TeamboxAPI
     end
 
     def update
-       connection.put(element_path(prefix_options) + '?' + encode, nil, self.class.headers).tap do |response|
-          load_attributes_from_response(response)
-       end
+      connection.put(element_path(prefix_options) + '?' + encode, nil, self.class.headers).tap do |response|
+        load_attributes_from_response(response)
+      end
     end
-   
+
     def create
       connection.post(collection_path + '?' + encode, nil, self.class.headers).tap do |response|
         self.id = id_from_response(response)
@@ -209,25 +212,25 @@ module TeamboxAPI
     end
 
     def self.find_every(options)
-          #add :count => 0 in order to retrieve objects with no limits. Default is 20 objects per request.
-          options[:params].merge!(:count => 0)
-          begin
-            case from = options[:from]
-            when Symbol
-              self.instantiate_collection(get(from, options[:params]))
-            when String
-              path = "#{from}#{query_string(options[:params])}"
-              self.instantiate_collection(connection.get(path, headers) || [])
-            else
-              prefix_options, query_options = split_options(options[:params])
-              path = self.collection_path(nil, prefix_options, query_options)
-              self.instantiate_collection( (connection.get(path, headers) || []), prefix_options )
-            end
-          rescue ActiveResource::ResourceNotFound
-            # Swallowing ResourceNotFound exceptions and return nil - as per
-            # ActiveRecord.
-            nil
-          end
+      #add :count => 0 in order to retrieve objects with no limits. Default is 20 objects per request.
+      options[:params].merge!(:count => 0)
+      begin
+        case from = options[:from]
+        when Symbol
+          self.instantiate_collection(get(from, options[:params]))
+        when String
+          path = "#{from}#{query_string(options[:params])}"
+          self.instantiate_collection(connection.get(path, headers) || [])
+        else
+          prefix_options, query_options = split_options(options[:params])
+          path = self.collection_path(nil, prefix_options, query_options)
+          self.instantiate_collection( (connection.get(path, headers) || []), prefix_options )
+        end
+      rescue ActiveResource::ResourceNotFound
+        # Swallowing ResourceNotFound exceptions and return nil - as per
+        # ActiveRecord.
+        nil
+      end
     end
 
   end
@@ -236,8 +239,8 @@ module TeamboxAPI
     self.site += 'projects/:project_id/tasks/:task_id/'
 
     def self.instantiate_collection(collection, prefix_options = {})
-        objects = collection["objects"]
-        objects.collect! { |record| instantiate_record(record, prefix_options) }
+      objects = collection["objects"]
+      objects.collect! { |record| instantiate_record(record, prefix_options) }
     end
 
     def create
