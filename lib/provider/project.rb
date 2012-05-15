@@ -1,9 +1,9 @@
-module TicketMaster::Provider
+module TaskMapper::Provider
   module Teambox
-    # Project class for ticketmaster-teambox
+    # Project class for taskmapper-teambox
     #
     #
-    class Project < TicketMaster::Provider::Base::Project
+    class Project < TaskMapper::Provider::Base::Project
       API = TeamboxAPI::Project # The class to access the api's projects
       # declare needed overloaded methods here
 
@@ -13,7 +13,7 @@ module TicketMaster::Provider
             #options[0].merge!(:params => {:id => id})
             super(*options)
           elsif options.empty?
-            tickets = TeamboxAPI::Task.find(:all, :params => {:project_id => id}).collect { |ticket| TicketMaster::Provider::Teambox::Ticket.new ticket }
+            tickets = TeamboxAPI::Task.find(:all, :params => {:project_id => id}).collect { |ticket| TaskMapper::Provider::Teambox::Ticket.new ticket }
           else
             super(*options)
           end

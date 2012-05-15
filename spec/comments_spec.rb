@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Ticketmaster::Provider::Teambox::Comment" do
+describe "TaskMapper::Provider::Teambox::Comment" do
   before(:each) do
     headers_get = {'Authorization' => 'OAuth ', 'Accept' => 'application/json'}  
     headers = {'Authorization' => 'OAuth ', 'Content-Type' => 'application/json'} 
@@ -26,12 +26,12 @@ describe "Ticketmaster::Provider::Teambox::Comment" do
       end
     end
 
-    @ticketmaster = TicketMaster.new(:teambox, {:username => "anymoto",
+    @taskmapper = TaskMapper.new(:teambox, {:username => "anymoto",
                                      :password => "000000", 
                                      :client_id => 'abcdef000000', 
                                      :client_secret => 'ghijk11111'})
-    @klass = TicketMaster::Provider::Teambox::Comment
-    @project = @ticketmaster.project(@project_id)
+    @klass = TaskMapper::Provider::Teambox::Comment
+    @project = @taskmapper.project(@project_id)
     @ticket = @project.ticket(@task_id)
     @ticket.project_id = @project.id
   end

@@ -1,12 +1,12 @@
 source "http://rubygems.org"
 
-gem "ticketmaster", "0.6.6"
-gem "oauth2"
+gem "taskmapper", "~> 0.8"
+gem "oauth2", "~> 0.7"
 
 group :development do
-  gem "bundler", "~> 1.0.0"
-  gem "jeweler", "~> 1.5.1"
-  gem "rcov", ">= 0"
-  gem "rspec", "= 1.2.9"
+  gem "jeweler", "~> 1.6"
+  gem "rspec", "~> 2.3"
+  gem "simplecov", "~> 0.5", :platforms => :ruby_19
+  gem "rcov", "~> 1.0", :platforms => :ruby_18
 end
 

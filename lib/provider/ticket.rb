@@ -1,9 +1,9 @@
-module TicketMaster::Provider
+module TaskMapper::Provider
   module Teambox
-    # Ticket class for ticketmaster-teambox
+    # Ticket class for taskmapper-teambox
     API = TeamboxAPI::Task # The class to access the api's tickets
     
-    class Ticket < TicketMaster::Provider::Base::Ticket
+    class Ticket < TaskMapper::Provider::Base::Ticket
       # declare needed overloaded methods here
       
       def initialize(*object)

@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 VERBS = [:get, :post, :put, :delete]
 
-describe "Ticketmaster::Provider::Teambox::Ticket" do
+describe "TaskMapper::Provider::Teambox::Ticket" do
   before(:each) do
    headers_get = {'Authorization' => 'OAuth ', 'Accept' => 'application/json'}  
    headers = {'Authorization' => 'OAuth ', 'Content-Type' => 'application/json'} 
@@ -17,12 +17,12 @@ describe "Ticketmaster::Provider::Teambox::Ticket" do
      mock.post '/api/1/projects/23216/task_lists/30232/tasks.json?name=Mobile%20App', headers, '', 200
    end
 
-    @ticketmaster = TicketMaster.new(:teambox, {:username => "anymoto",
+    @taskmapper = TaskMapper.new(:teambox, {:username => "anymoto",
                                      :password => "000000", 
                                      :client_id => 'abcdef000000', 
                                      :client_secret => 'ghijk11111'})
-    @project = @ticketmaster.project(@project_id)
-    @klass = TicketMaster::Provider::Teambox::Ticket
+    @project = @taskmapper.project(@project_id)
+    @klass = TaskMapper::Provider::Teambox::Ticket
   end
 
   it "should be able to load all tickets" do 

@@ -1,12 +1,12 @@
-# ticketmaster-teambox
+# taskmapper-teambox
 
-This is a provider for [ticketmaster](http://ticketrb.com). It provides interoperability with [Teambox](http://www.teambox.com).
+This is a provider for [taskmapper](http://ticketrb.com). It provides interoperability with [Teambox](http://www.teambox.com).
 
 # Usage and Examples
 
-First we have to instantiate a new ticketmaster instance:
+First we have to instantiate a new taskmapper instance:
 
-    teambox = TicketMaster.new(:teambox, {:username => "foo", :password => "bar", :client_id => "your_client_id", :client_secret => "your_client_secret"})
+    teambox = TaskMapper.new(:teambox, {:username => "foo", :password => "bar", :client_id => "your_client_id", :client_secret => "your_client_secret"})
 
 If you do not pass in username, password, client id and client secret you won't get any information.
 
@@ -43,15 +43,15 @@ You can find your own projects by doing:
 ## Requirements
 
 * rubygems (obviously)
-* ticketmaster gem (latest version preferred)
+* taskmapper gem (latest version preferred)
 * jeweler gem and bundler gem (only if you want to repackage and develop)
 * OAuth2 gem
 
-The ticketmaster gem and OAuth2 gem should automatically be installed during the installation of these gems if it is not already installed.
+The taskmapper gem and OAuth2 gem should automatically be installed during the installation of these gems if it is not already installed.
 
 ## Other Notes
 
-Since this and the ticketmaster gem is still primarily a work-in-progress, minor changes may be incompatible with previous versions. Please be careful about using and updating this gem in production.
+Since this and the taskmapper gem is still primarily a work-in-progress, minor changes may be incompatible with previous versions. Please be careful about using and updating this gem in production.
 
 If you see or find any issues, feel free to open up an issue report.
 

@@ -4,13 +4,13 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{ticketmaster-teambox}
+  s.name = %q{taskmapper-teambox}
   s.version = "0.1.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Hybridgroup"]
   s.date = %q{2011-08-12}
-  s.description = %q{Allows ticketmaster to interact with Teambox}
+  s.description = %q{Allows taskmapper to interact with Teambox}
   s.email = %q{ana@hybridgroup.com}
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
     "lib/provider/teambox.rb",
     "lib/provider/ticket.rb",
     "lib/teambox/teambox-api.rb",
-    "lib/ticketmaster-teambox.rb",
+    "lib/taskmapper-teambox.rb",
     "spec/comments_spec.rb",
     "spec/fixtures/comments.json",
     "spec/fixtures/comments/create.json",
@@ -43,19 +43,19 @@ Gem::Specification.new do |s|
     "spec/projects_spec.rb",
     "spec/spec.opts",
     "spec/spec_helper.rb",
-    "spec/ticketmaster-teambox_spec.rb",
+    "spec/taskmapper-teambox_spec.rb",
     "spec/tickets_spec.rb",
-    "ticketmaster-teambox.gemspec"
+    "taskmapper-teambox.gemspec"
   ]
   s.homepage = %q{http://ticketrb.com}
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
-  s.summary = %q{Ticketmaster Provider for Teambox}
+  s.summary = %q{TaskMapper Provider for Teambox}
   s.test_files = [
     "spec/comments_spec.rb",
     "spec/projects_spec.rb",
     "spec/spec_helper.rb",
-    "spec/ticketmaster-teambox_spec.rb",
+    "spec/taskmapper-teambox_spec.rb",
     "spec/tickets_spec.rb"
   ]
 
@@ -64,7 +64,7 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<ticketmaster>, ["= 0.6.6"])
+      s.add_runtime_dependency(%q<taskmapper>, ["= 0.6.6"])
       s.add_runtime_dependency(%q<oauth2>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.1"])
@@ -73,7 +73,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<activesupport>, [">= 3.0.4"])
       s.add_runtime_dependency(%q<activeresource>, [">= 3.0.4"])
     else
-      s.add_dependency(%q<ticketmaster>, ["= 0.6.6"])
+      s.add_dependency(%q<taskmapper>, ["= 0.6.6"])
       s.add_dependency(%q<oauth2>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.1"])
@@ -83,7 +83,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<activeresource>, [">= 3.0.4"])
     end
   else
-    s.add_dependency(%q<ticketmaster>, ["= 0.6.6"])
+    s.add_dependency(%q<taskmapper>, ["= 0.6.6"])
     s.add_dependency(%q<oauth2>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.1"])
